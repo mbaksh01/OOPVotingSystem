@@ -4,13 +4,13 @@ namespace OOPVotingSystem.Repositories.Abstractions;
 
 public interface IPersonRepository : IRepository<Person>
 {
-    void RegisterToVote();
+    void RegisterToVote(string id);
 
-    Task RegisterToVoteAsync();
+    Task RegisterToVoteAsync(string id);
 
-    void CastVote();
+    void CastVote(Vote vote);
 
-    Task CastVoteAsync();
+    Task CastVoteAsync(Vote vote);
 
     bool IsVerified(string id);
 
