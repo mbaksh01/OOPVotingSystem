@@ -1,8 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using OOPVotingSystem.DAL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
+var sharedOptions = new DbContextOptionsBuilder()
+    .UseInMemoryDatabase("test");
+
+builder.Services
+    .AddDbContext<PersonContext>(op => op = sharedOptions);
 
 var app = builder.Build();
 
