@@ -13,4 +13,6 @@ public class Address
     public string PostalCode { get; set; } = default!;
 
     public string Country { get; set; } = default!;
+
+    public virtual List<Person> People { get; set; } = default!;
 }

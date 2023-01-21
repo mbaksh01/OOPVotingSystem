@@ -6,7 +6,9 @@ public class Party
 
     public string Name { get; set; } = default!;
 
-    public Address OperationAddress { get; set; } = default!;
+    public virtual Address OperationAddress { get; set; } = default!;
 
-    public List<Budget> Budgets { get; set; } = new();
+    public virtual List<Budget> Budgets { get; set; } = new();
+
+    public virtual List<Candidate> Candidates { get; set; } = new();
 }

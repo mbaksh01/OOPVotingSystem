@@ -6,8 +6,6 @@ public class Person
 
     public string Name { get; set; } = default!;
 
-    public Address Address { get; set; } = default!;
-
     public string? PhoneNumber { get; set; }
 
     public string? Email { get; set; }
@@ -17,4 +15,6 @@ public class Person
     public bool Verified { get; set; }
 
     public bool AcceptedTerms { get; set; }
+
+    public virtual Address Address { get; set; } = default!;
 }

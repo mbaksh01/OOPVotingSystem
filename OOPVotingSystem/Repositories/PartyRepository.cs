@@ -1,11 +1,28 @@
-﻿using OOPVotingSystem.Models;
+﻿using OOPVotingSystem.DAL;
+using OOPVotingSystem.Models;
 using OOPVotingSystem.Repositories.Abstractions;
 
 namespace OOPVotingSystem.Repositories;
 
 public class PartyRepository : IPartyRepository
 {
-    public Task<Party> CreateAsync(Party entity) => throw new NotImplementedException();
+    private readonly PartyContext _partyContext;
+
+    public PartyRepository(PartyContext partyContext)
+    {
+        _partyContext = partyContext;
+    }
+
+    public async Task<Party> CreateAsync(Party entity)
+    {
+        entity.Id = Guid.NewGuid().ToString();
+
+        _ = await _partyContext.AddAsync(entity);
+
+        _ = await _partyContext.SaveChangesAsync();
+
+        return entity;
+    }
     
     public void CreateBudget(string id, string electionId) => throw new NotImplementedException();
     
