@@ -5,7 +5,7 @@ namespace OOPVotingSystem.DAL;
 
 public class MoneyContext : DbContext
 {
-	public MoneyContext(DbContextOptions options) : base(options) { }
+	public MoneyContext(DbContextOptions<MoneyContext> options) : base(options) { }
 
 	public DbSet<Budget> Budgets { get; set; }
 

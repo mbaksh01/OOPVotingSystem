@@ -123,29 +123,23 @@ public class VoteRepository : IVoteRepository
     {
         Vote? vote = _voteContext.Votes.Find(id);
 
-        if (vote is null)
-        {
-            throw new ArgumentException(
-                "The primary key provided was not associated with any vote.", 
+        return vote is null
+            ? throw new ArgumentException(
+                "The primary key provided was not associated with any vote.",
                 nameof(id)
-            );
-        }
-
-        return vote;
+            )
+            : vote;
     }
 
     private async Task<Vote> GetVoteAsync(string id)
     {
         Vote? vote = await _voteContext.Votes.FindAsync(id);
 
-        if (vote is null)
-        {
-            throw new ArgumentException(
+        return vote is null
+            ? throw new ArgumentException(
                 "The primary key provided was not associated with any vote.",
                 nameof(id)
-            );
-        }
-
-        return vote;
+            )
+            : vote;
     }
 }

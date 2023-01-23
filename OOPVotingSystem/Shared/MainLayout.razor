@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<PageTitle>OOPVotingSystem</PageTitle>
+<PageTitle>Voting System</PageTitle>
 
 <div class="page">
     <div class="sidebar">
@@ -8,9 +8,18 @@
     </div>
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
+        @if (_userService.CurrentUser is null)
+        {
+            <div class="top-row px-4">
+                <a href="login">Sign In</a>
+            </div>
+        }
+        else
+        {
+            <div class="top-row px-4">
+                <a href="login">@GetTimeOfDay(), @_userService.CurrentUser.Username</a>
+            </div>
+        }
 
         <article class="content px-4">
             @Body

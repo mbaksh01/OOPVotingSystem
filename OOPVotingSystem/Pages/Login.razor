@@ -1,0 +1,96 @@
+﻿@page "/login"
+
+@if (!_signingUp)
+{
+    <h3>Sign In</h3>
+
+    <Paragraph>
+        Don't have an account? Click <Anchor Clicked="@(() => _signingUp = true)">here</Anchor> to register.
+    </Paragraph>
+
+    <hr />
+
+    <EditForm Model="_user">
+        <Fields>
+            <Field Horizontal>
+                <FieldLabel>Username</FieldLabel>
+                <FieldBody>
+                    <TextEdit @bind-Text="_user.Username" Placeholder="Username"></TextEdit>
+                </FieldBody>
+                <FieldLabel>Password</FieldLabel>
+                <FieldBody>
+                    <TextEdit Role="TextRole.Password" @bind-Text="_user.Password" Placeholder="Password"></TextEdit>
+                </FieldBody>
+                <FieldBody>
+                    <Button Clicked="SignIn" Border="Border.Is1.Rounded" Margin="Margin.Is2.OnY">Sign In</Button>
+                </FieldBody>
+                <FieldBody>
+                    @if (_errorMessage is not null)
+                    {
+                        <Paragraph>@_errorMessage</Paragraph>
+                    }
+                </FieldBody>
+            </Field>
+        </Fields>
+    </EditForm>
+}
+else
+{
+    <h3>Sign Up</h3>
+
+    <Paragraph>
+        Already have an account? Click <Anchor Clicked="@(() => _signingUp = false)">here</Anchor> to sign in.
+    </Paragraph>
+
+    <hr />
+
+    <h4>Person Details</h4>
+
+    <EditForm Model="_person">
+        <Fields Display="Display.Flex" VerticalAlignment="VerticalAlignment.Top">
+            <Field Horizontal>
+                <FieldLabel>Name</FieldLabel>
+                <FieldBody>
+                    <TextEdit @bind-Text="_person.Name" Placeholder="Full Name"></TextEdit>
+                </FieldBody>
+                <FieldLabel>Phone Number</FieldLabel>
+                <FieldBody>
+                    <TextEdit Role="TextRole.Telephone" @bind-Text="_person.PhoneNumber" Placeholder="Phone number"></TextEdit>
+                </FieldBody>
+                <FieldLabel>Email</FieldLabel>
+                <FieldBody>
+                    <TextEdit Role="TextRole.Email" @bind-Text="_person.Email" Placeholder="Email"></TextEdit>
+                </FieldBody>
+                <FieldLabel>Unique Person Identifier</FieldLabel>
+                <FieldBody>
+                    <TextEdit @bind-Text="_person.UniquePersonIdentifier" Placeholder="UNI"></TextEdit>
+                </FieldBody>
+                <FieldLabel>I have read and accepted the terms and conditions</FieldLabel>
+                <FieldBody>
+                    @*<Check TValue="bool" />*@
+                </FieldBody>
+            </Field>
+        </Fields>
+    </EditForm>
+
+    <h4>Sign In Details</h4>
+
+    <EditForm Model="_user">
+        <Fields>
+            <Field Horizontal>
+                <FieldLabel>Username</FieldLabel>
+                <FieldBody>
+                    <TextEdit @bind-Text="_user.Username" Placeholder="Username"></TextEdit>
+                </FieldBody>
+                <FieldLabel>Password</FieldLabel>
+                <FieldBody>
+                    <TextEdit Role="TextRole.Password" @bind-Text="_user.Password" Placeholder="Password"></TextEdit>
+                </FieldBody>
+                <FieldBody>
+                    <Button Clicked="Register" Border="Border.Is1.Rounded" Margin="Margin.Is2.OnY">Register</Button>
+                </FieldBody>
+            </Field>
+        </Fields>
+    </EditForm>
+
+}

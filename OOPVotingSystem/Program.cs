@@ -1,5 +1,12 @@
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 using Microsoft.EntityFrameworkCore;
 using OOPVotingSystem.DAL;
+using OOPVotingSystem.Repositories;
+using OOPVotingSystem.Repositories.Abstractions;
+using OOPVotingSystem.Service;
+using OOPVotingSystem.Service.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +18,24 @@ var sharedOptions = new DbContextOptionsBuilder()
     .UseInMemoryDatabase("test");
 
 builder.Services
-    .AddDbContext<PersonContext>(op => op = sharedOptions);
+    .AddDbContext<PersonContext>(op => op = op.UseInMemoryDatabase("test"))
+    .AddDbContext<MoneyContext>(op => op = sharedOptions)
+    .AddDbContext<VoteContext>(op => op = sharedOptions)
+    .AddDbContext<PartyContext>(op => op = sharedOptions)
+    .AddDbContext<UserContext>(op => op = sharedOptions);
+
+builder.Services
+    .AddScoped<IPartyRepository, PartyRepository>()
+    .AddScoped<IPersonRepository, PersonRepository>()
+    .AddScoped<IVoteRepository, VoteRepository>();
+
+builder.Services
+    .AddScoped<IUserService, UserService>();
+
+builder.Services
+    .AddBlazorise(options => options.Immediate = true)
+    .AddBootstrapProviders()
+    .AddFontAwesomeIcons();
 
 var app = builder.Build();
 

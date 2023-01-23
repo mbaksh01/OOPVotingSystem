@@ -5,7 +5,7 @@ namespace OOPVotingSystem.DAL;
 
 public class VoteContext : DbContext
 {
-	public VoteContext() { }
+	public VoteContext(DbContextOptions<VoteContext> options) : base(options) { }
 
-	public DbSet<Vote> Votes { get; set; }
+    public DbSet<Vote> Votes { get; set; }
 }

@@ -2,6 +2,8 @@
 
 public class Address
 {
+    public string Id { get; set; } = default!;
+
     public string Street1 { get; set; } = default!;
 
     public string? Street2 { get; set; }

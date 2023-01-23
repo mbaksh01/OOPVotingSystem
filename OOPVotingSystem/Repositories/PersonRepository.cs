@@ -1,7 +1,6 @@
 ﻿using OOPVotingSystem.DAL;
 using OOPVotingSystem.Models;
 using OOPVotingSystem.Repositories.Abstractions;
-using System.Linq.Expressions;
 
 namespace OOPVotingSystem.Repositories;
 

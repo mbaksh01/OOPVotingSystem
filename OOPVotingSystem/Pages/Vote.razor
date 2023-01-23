@@ -1,0 +1,23 @@
+﻿@page "/vote"
+
+<h2>Vote</h2>
+
+<hr/>
+
+<div>
+    <h3>Register To Vote</h3>
+    
+    @if (_userService.CurrentUser is not null)
+    {
+        <button>Register</button>
+    }
+    else
+    {
+        <p>
+            You have to be logged in to register.
+            Sign in <a href="login">here</a>.
+        </p>
+    }
+</div>
+
+
