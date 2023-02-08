@@ -1,5 +1,8 @@
-﻿namespace OOPVotingSystem.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
+namespace OOPVotingSystem.Models;
+
+[PrimaryKey(nameof(PartyId), nameof(ElectionId))]
 public record Budget
 {
     public Budget(string partyId, string electionId)

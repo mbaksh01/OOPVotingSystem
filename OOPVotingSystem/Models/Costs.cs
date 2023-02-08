@@ -1,5 +1,8 @@
-﻿namespace OOPVotingSystem.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
+namespace OOPVotingSystem.Models;
+
+[PrimaryKey(nameof(PartyId), nameof(ElectionId))]
 public class Costs
 {
     public string PartyId { get; set; } = default!;

@@ -2,95 +2,162 @@
 
 @if (!_signingUp)
 {
-    <h3>Sign In</h3>
+<h3>Sign In</h3>
 
-    <Paragraph>
-        Don't have an account? Click <Anchor Clicked="@(() => _signingUp = true)">here</Anchor> to register.
-    </Paragraph>
+<Paragraph>
+    Don't have an account? Click <Anchor Clicked="@(() => _signingUp = true)">here</Anchor> to register.
+</Paragraph>
 
-    <hr />
+<hr />
 
-    <EditForm Model="_user">
-        <Fields>
-            <Field Horizontal>
-                <FieldLabel>Username</FieldLabel>
-                <FieldBody>
-                    <TextEdit @bind-Text="_user.Username" Placeholder="Username"></TextEdit>
-                </FieldBody>
-                <FieldLabel>Password</FieldLabel>
-                <FieldBody>
-                    <TextEdit Role="TextRole.Password" @bind-Text="_user.Password" Placeholder="Password"></TextEdit>
-                </FieldBody>
-                <FieldBody>
-                    <Button Clicked="SignIn" Border="Border.Is1.Rounded" Margin="Margin.Is2.OnY">Sign In</Button>
-                </FieldBody>
-                <FieldBody>
-                    @if (_errorMessage is not null)
-                    {
-                        <Paragraph>@_errorMessage</Paragraph>
-                    }
-                </FieldBody>
-            </Field>
-        </Fields>
-    </EditForm>
+<EditForm Model="_user">
+    <Fields>
+        <Field Horizontal>
+            <FieldLabel>Username</FieldLabel>
+            <FieldBody>
+                <TextEdit @bind-Text="_user.Username" Placeholder="Username"></TextEdit>
+            </FieldBody>
+            <FieldLabel>Password</FieldLabel>
+            <FieldBody>
+                <TextEdit Role="TextRole.Password" @bind-Text="_user.Password" Placeholder="Password"></TextEdit>
+            </FieldBody>
+            <FieldBody>
+                <Button Clicked="SignIn" Border="Border.Is1.Rounded" Margin="Margin.Is2.OnY">Sign In</Button>
+            </FieldBody>
+            <FieldBody>
+                @if (_errorMessage is not null)
+                {
+                    <Paragraph>@_errorMessage</Paragraph>
+                }
+            </FieldBody>
+        </Field>
+    </Fields>
+</EditForm>
 }
 else
 {
-    <h3>Sign Up</h3>
+<h3>Sign Up</h3>
 
-    <Paragraph>
-        Already have an account? Click <Anchor Clicked="@(() => _signingUp = false)">here</Anchor> to sign in.
-    </Paragraph>
+<Paragraph>
+    Already have an account? Click <Anchor Clicked="@(() => _signingUp = false)">here</Anchor> to sign in.
+</Paragraph>
 
-    <hr />
+<hr />
 
-    <h4>Person Details</h4>
+<h4>Personal Details</h4>
 
-    <EditForm Model="_person">
-        <Fields Display="Display.Flex" VerticalAlignment="VerticalAlignment.Top">
-            <Field Horizontal>
-                <FieldLabel>Name</FieldLabel>
-                <FieldBody>
-                    <TextEdit @bind-Text="_person.Name" Placeholder="Full Name"></TextEdit>
-                </FieldBody>
-                <FieldLabel>Phone Number</FieldLabel>
-                <FieldBody>
-                    <TextEdit Role="TextRole.Telephone" @bind-Text="_person.PhoneNumber" Placeholder="Phone number"></TextEdit>
-                </FieldBody>
-                <FieldLabel>Email</FieldLabel>
-                <FieldBody>
-                    <TextEdit Role="TextRole.Email" @bind-Text="_person.Email" Placeholder="Email"></TextEdit>
-                </FieldBody>
-                <FieldLabel>Unique Person Identifier</FieldLabel>
-                <FieldBody>
-                    <TextEdit @bind-Text="_person.UniquePersonIdentifier" Placeholder="UNI"></TextEdit>
-                </FieldBody>
-                <FieldLabel>I have read and accepted the terms and conditions</FieldLabel>
-                <FieldBody>
-                    @*<Check TValue="bool" />*@
-                </FieldBody>
-            </Field>
-        </Fields>
-    </EditForm>
+<Validations>
+    <Validation Validator="ValidationRule.IsNotEmpty">
+        <Field Horizontal>
+            <FieldLabel ColumnSize="ColumnSize.Is2">Name</FieldLabel>
+            <FieldBody ColumnSize="ColumnSize.Is6">
+                <TextEdit @bind-Text="_person.Name" Placeholder="Full Name"></TextEdit>
+            </FieldBody>
+        </Field>
+    </Validation>
+    <Field Horizontal>
+        <FieldLabel ColumnSize="ColumnSize.Is2">Phone Number</FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.Is6">
+            <TextEdit Role="TextRole.Telephone" @bind-Text="_person.PhoneNumber" Placeholder="Phone number"></TextEdit>
+        </FieldBody>
+    </Field>
+    <Validation Validator="ValidationRule.IsEmail">
+        <Field Horizontal>
+            <FieldLabel ColumnSize="ColumnSize.Is2">Email</FieldLabel>
+            <FieldBody ColumnSize="ColumnSize.Is6">
+                <TextEdit Role="TextRole.Email" @bind-Text="_person.Email" Placeholder="Email"></TextEdit>
+            </FieldBody>
+        </Field>
+    </Validation>
+    <Field Horizontal>
+        <FieldLabel ColumnSize="ColumnSize.Is2">Unique Person Identifier</FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.Is6">
+            <TextEdit @bind-Text="_person.UniquePersonIdentifier" Placeholder="UNI"></TextEdit>
+        </FieldBody>
+    </Field>
+    <Field Horizontal>
+        <FieldLabel ColumnSize="ColumnSize.Is2" Padding="Padding.Is3.FromEnd"></FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.Is6" Display="Display.Flex" Flex="Flex.AlignItems.Center">
+            <Check TValue="bool">
+                I have read and accepted the terms and conditions.
+            </Check>
+        </FieldBody>
+    </Field>
+</Validations>
+    
+<h4>Address</h4>
 
-    <h4>Sign In Details</h4>
+<EditForm Model="_person.Address">
+    <Fields Display="Display.Flex" VerticalAlignment="VerticalAlignment.Top">
+        <Field Horizontal>
+            <FieldLabel>Street1</FieldLabel>
+            <FieldBody>
+                <Validation Validator="ValidationRule.IsAlphanumeric">
+                    <TextEdit @bind-Text="_person.Address.Street1" Placeholder="Street 1"></TextEdit>
+                </Validation>
+            </FieldBody>
+            <FieldLabel>Street2</FieldLabel>
+            <FieldBody>
+                <Validation>
+                    <TextEdit @bind-Text="_person.Address.Street2" Placeholder="Street 2 (Optional)"></TextEdit>
+                </Validation>
+            </FieldBody>
+            <FieldLabel>City</FieldLabel>
+            <FieldBody>
+                <Validation Validator="ValidationRule.IsAlpha">
+                    <TextEdit @bind-Text="_person.Address.City" Placeholder="City"></TextEdit>
+                </Validation>
+            </FieldBody>
+            <FieldLabel>State</FieldLabel>
+            <FieldBody>
+                <Validation>
+                    <TextEdit @bind-Text="_person.Address.State" Placeholder="State (Optional)"></TextEdit>
+                </Validation>
+            </FieldBody>
+            <FieldLabel>Postal Code</FieldLabel>
+            <FieldBody>
+                <Validation Validator="ValidationRule.IsAlphanumeric">
+                    <TextEdit @bind-Text="_person.Address.PostalCode" Placeholder="Postal Code"></TextEdit>
+                </Validation>
+            </FieldBody>
+            <FieldLabel>County</FieldLabel>
+            <FieldBody>
+                <Validation Validator="ValidationRule.IsAlpha">
+                    <TextEdit @bind-Text="_person.Address.Country" Placeholder="County"></TextEdit>
+                </Validation>
+            </FieldBody>
+        </Field>
+    </Fields>
+</EditForm>
 
-    <EditForm Model="_user">
-        <Fields>
-            <Field Horizontal>
-                <FieldLabel>Username</FieldLabel>
-                <FieldBody>
+<h4>Sign In Details</h4>
+
+<EditForm Model="_user">
+    <Fields>
+        <Field Horizontal>
+            <FieldLabel>Username</FieldLabel>
+            <FieldBody>
+                <Validation Validator="ValidationRule.IsNotEmpty">
                     <TextEdit @bind-Text="_user.Username" Placeholder="Username"></TextEdit>
-                </FieldBody>
-                <FieldLabel>Password</FieldLabel>
-                <FieldBody>
+                </Validation>
+            </FieldBody>
+            <FieldLabel>Password</FieldLabel>
+            <FieldBody>
+                <Validation Validator="ValidationRule.IsAlphanumericWithUnderscore">
                     <TextEdit Role="TextRole.Password" @bind-Text="_user.Password" Placeholder="Password"></TextEdit>
-                </FieldBody>
-                <FieldBody>
-                    <Button Clicked="Register" Border="Border.Is1.Rounded" Margin="Margin.Is2.OnY">Register</Button>
-                </FieldBody>
-            </Field>
-        </Fields>
-    </EditForm>
-
+                </Validation>
+            </FieldBody>
+            <FieldBody>
+                <Button 
+                    Clicked="Register"
+                    Border="Border.Is1.Rounded"
+                    Margin="Margin.Is2.OnY"
+                    Background="Background.Primary"
+                    TextColor="TextColor.White">
+                    Register
+                </Button>
+            </FieldBody>
+        </Field>
+    </Fields>
+</EditForm>
 }

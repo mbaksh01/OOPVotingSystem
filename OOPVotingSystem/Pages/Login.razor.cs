@@ -9,7 +9,13 @@ public partial class Login : ComponentBase, IDisposable
 {
     private User _user = new();
 
-    private Person _person = new();
+    private Person _person = new()
+    {
+        Address = new()
+        {
+            Id = Guid.NewGuid().ToString()
+        }
+    };
 
     private bool _signingUp = false;
 

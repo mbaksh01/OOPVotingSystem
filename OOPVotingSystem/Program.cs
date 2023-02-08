@@ -14,15 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-var sharedOptions = new DbContextOptionsBuilder()
-    .UseInMemoryDatabase("test");
-
 builder.Services
-    .AddDbContext<PersonContext>(op => op = op.UseInMemoryDatabase("test"))
-    .AddDbContext<MoneyContext>(op => op = sharedOptions)
-    .AddDbContext<VoteContext>(op => op = sharedOptions)
-    .AddDbContext<PartyContext>(op => op = sharedOptions)
-    .AddDbContext<UserContext>(op => op = sharedOptions);
+    .AddDbContext<PersonContext>(op => op = op.UseSqlite("DataSource=oop.db"))
+    .AddDbContext<AddressContext>(op => op = op.UseSqlite("DataSource=oop.db"))
+    .AddDbContext<MoneyContext>(op => op = op.UseSqlite("DataSource=oop.db"))
+    .AddDbContext<VoteContext>(op => op = op.UseSqlite("DataSource=oop.db"))
+    .AddDbContext<PartyContext>(op => op = op.UseSqlite("DataSource=oop.db"))
+    .AddDbContext<UserContext>(op => op.UseSqlite("DataSource=oop.db"));
 
 builder.Services
     .AddScoped<IPartyRepository, PartyRepository>()

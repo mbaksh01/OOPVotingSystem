@@ -8,6 +8,8 @@ public class UserService : IUserService
 {
     private readonly UserContext _userContext;
 
+    private readonly PersonContext _personContext;
+
     private User? _user;
 
     public User? CurrentUser
@@ -23,9 +25,10 @@ public class UserService : IUserService
 
     public Action<User?>? CurrentUserChanged { get; set; }
 
-    public UserService(UserContext userContext)
+    public UserService(UserContext userContext, PersonContext personContext)
     {
         _userContext = userContext;
+        _personContext = personContext;
     }
 
     public async Task CreateAccountAsync(User user)
