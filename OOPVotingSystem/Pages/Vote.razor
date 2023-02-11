@@ -4,20 +4,29 @@
 
 <hr/>
 
-<div>
-    <h3>Register To Vote</h3>
-    
-    @if (_userService.CurrentUser is not null)
+<h3>Vote for a party</h3>
+
+@if (_userService.CurrentUser is not null)
+{
+    @if (_userService.CurrentUser.Person.CanVote())
     {
-        <button>Register</button>
+        <!-- Loop thorugh all parties -->
+        <Check TValue="bool"></Check>
+        <Button>Cast Vote</Button>
     }
     else
     {
-        <p>
-            You have to be logged in to register.
-            Sign in <a href="login">here</a>.
-        </p>
+        <Paragraph>
+            It seems that you have either not verified your account or
+            have accepted the terms and conditions. Please ensure your
+            account is verified and you have accepted the terms and
+            conditions to continue.
+        </Paragraph>
     }
-</div>
-
-
+}
+else
+{
+    <Paragraph>
+        You need to be logged in to vote.
+    </Paragraph>
+}

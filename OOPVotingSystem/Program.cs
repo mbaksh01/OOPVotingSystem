@@ -18,6 +18,7 @@ builder.Services
     .AddDbContext<PersonContext>(op => op = op.UseSqlite("DataSource=oop.db"))
     .AddDbContext<AddressContext>(op => op = op.UseSqlite("DataSource=oop.db"))
     .AddDbContext<MoneyContext>(op => op = op.UseSqlite("DataSource=oop.db"))
+    .AddDbContext<ElectionContext>(op => op = op.UseSqlite("DataSource=oop.db"))
     .AddDbContext<VoteContext>(op => op = op.UseSqlite("DataSource=oop.db"))
     .AddDbContext<PartyContext>(op => op = op.UseSqlite("DataSource=oop.db"))
     .AddDbContext<UserContext>(op => op.UseSqlite("DataSource=oop.db"));

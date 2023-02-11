@@ -1,42 +1,45 @@
 ﻿using Microsoft.AspNetCore.Components;
 using OOPVotingSystem.Models;
-using OOPVotingSystem.Repositories.Abstractions;
 using OOPVotingSystem.Service.Abstractions;
 
 namespace OOPVotingSystem.Pages;
 
 public partial class Login : ComponentBase, IDisposable
 {
-    private User _user = new();
-
-    private Person _person = new()
+    private User _user = new()
     {
-        Address = new()
+        Person = new()
         {
-            Id = Guid.NewGuid().ToString()
+            Id = Guid.NewGuid().ToString(),
+
+            Address = new()
+            {
+                Id = Guid.NewGuid().ToString(),
+            }
         }
     };
 
     private bool _signingUp = false;
 
-    private string? _errorMessage = null;
+    private bool _justSignedUp = false;
 
-    [Inject] IPersonRepository _personRepository { get; set; } = default!;
+    private string? _errorMessage = null;
 
     [Inject] IUserService _userService { get; set; } = default!;
 
+    [Inject] NavigationManager _navigationManager { get; set; } = default!;
+
     private async Task Register()
     {
-        Person person = await _personRepository.CreateAsync(_person);
-
-        _user.PersonId = person.Id;
+        _user.PersonId = _user.Person.Id;
 
         await _userService.CreateAccountAsync(_user);
 
-        _person = new();
+        // _person = new();
         _user = new();
 
         _signingUp = false;
+        _justSignedUp = true;
     }
 
     private async Task SignIn()
@@ -50,7 +53,10 @@ public partial class Login : ComponentBase, IDisposable
         else
         {
             _errorMessage = null;
+            _navigationManager.NavigateTo("/");
         }
+
+        _justSignedUp = false;
     }
 
     public void Dispose()

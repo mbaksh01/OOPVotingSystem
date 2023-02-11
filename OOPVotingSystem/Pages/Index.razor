@@ -1,7 +1,18 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Vote</h1>
 
-Welcome to your new app.
+@if (_userService.CurrentUser is not null)
+{
+    <Paragraph>
+        Cast your vote <Anchor To="/vote">here</Anchor>.
+    </Paragraph>
+}
+else
+{
+    <Paragraph>
+        You need to be logged in to vote.
+    </Paragraph>
+}

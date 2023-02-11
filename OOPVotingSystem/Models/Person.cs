@@ -17,4 +17,6 @@ public class Person
     public bool AcceptedTerms { get; set; }
 
     public virtual Address Address { get; set; } = default!;
+
+    public bool CanVote() => Verified && AcceptedTerms;
 }
