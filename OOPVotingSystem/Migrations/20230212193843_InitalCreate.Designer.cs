@@ -7,11 +7,11 @@ using OOPVotingSystem.DAL;
 
 #nullable disable
 
-namespace OOPVotingSystem.Migrations.Money
+namespace OOPVotingSystem.Migrations
 {
-    [DbContext(typeof(MoneyContext))]
-    [Migration("20230208192749_InitialCreate")]
-    partial class InitialCreate
+    [DbContext(typeof(Database))]
+    [Migration("20230212193843_InitalCreate")]
+    partial class InitalCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,7 +48,7 @@ namespace OOPVotingSystem.Migrations.Money
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address");
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("OOPVotingSystem.Models.Budget", b =>
@@ -90,7 +90,11 @@ namespace OOPVotingSystem.Migrations.Money
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("County")
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -99,7 +103,7 @@ namespace OOPVotingSystem.Migrations.Money
 
                     b.HasKey("Id");
 
-                    b.ToTable("Election");
+                    b.ToTable("Elections");
                 });
 
             modelBuilder.Entity("OOPVotingSystem.Models.Party", b =>
@@ -112,13 +116,14 @@ namespace OOPVotingSystem.Migrations.Money
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OperationAddressId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OperationAddressId");
 
-                    b.ToTable("Party");
+                    b.ToTable("Parties");
                 });
 
             modelBuilder.Entity("OOPVotingSystem.Models.Person", b =>
@@ -158,11 +163,59 @@ namespace OOPVotingSystem.Migrations.Money
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("Person");
+                    b.ToTable("People");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Person");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("OOPVotingSystem.Models.User", b =>
+                {
+                    b.Property<string>("Username")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PersonId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Username");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("OOPVotingSystem.Models.Vote", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CandidateId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ElectionId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PersonId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CandidateId");
+
+                    b.HasIndex("ElectionId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("OOPVotingSystem.Models.Candidate", b =>
@@ -218,7 +271,9 @@ namespace OOPVotingSystem.Migrations.Money
                 {
                     b.HasOne("OOPVotingSystem.Models.Address", "OperationAddress")
                         .WithMany()
-                        .HasForeignKey("OperationAddressId");
+                        .HasForeignKey("OperationAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("OperationAddress");
                 });
@@ -232,6 +287,44 @@ namespace OOPVotingSystem.Migrations.Money
                         .IsRequired();
 
                     b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("OOPVotingSystem.Models.User", b =>
+                {
+                    b.HasOne("OOPVotingSystem.Models.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("OOPVotingSystem.Models.Vote", b =>
+                {
+                    b.HasOne("OOPVotingSystem.Models.Candidate", "Candidate")
+                        .WithMany()
+                        .HasForeignKey("CandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OOPVotingSystem.Models.Election", "Election")
+                        .WithMany()
+                        .HasForeignKey("ElectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OOPVotingSystem.Models.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Candidate");
+
+                    b.Navigation("Election");
+
+                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("OOPVotingSystem.Models.Candidate", b =>

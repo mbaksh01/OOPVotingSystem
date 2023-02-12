@@ -6,9 +6,7 @@ namespace OOPVotingSystem.Service;
 
 public class UserService : IUserService
 {
-    private readonly UserContext _userContext;
-
-    private readonly PersonContext _personContext;
+    private readonly Database _database;
 
     private User? _user;
 
@@ -25,10 +23,9 @@ public class UserService : IUserService
 
     public Action<User?>? CurrentUserChanged { get; set; }
 
-    public UserService(UserContext userContext, PersonContext personContext)
+    public UserService(Database database)
     {
-        _userContext = userContext;
-        _personContext = personContext;
+        _database = database;
     }
 
     public async Task CreateAccountAsync(User user)
@@ -42,14 +39,14 @@ public class UserService : IUserService
             );
         }
 
-        _ = await _userContext.Users.AddAsync(user);
+        _ = await _database.Users.AddAsync(user);
 
-        _ = await _userContext.SaveChangesAsync();
+        _ = await _database.SaveChangesAsync();
     }
 
     public async Task<bool> Login(string username, string password)
     {
-        User? user = await _userContext.Users.FindAsync(username);
+        User? user = await _database.Users.FindAsync(username);
 
         if (user == null)
         {
@@ -67,4 +64,8 @@ public class UserService : IUserService
     }
 
     public void Logout() => CurrentUser = null;
+
+    public bool CurrentUserIsAdmin()
+        => CurrentUser is not null
+        && CurrentUser.Username.ToLower().Contains("admin");
 }

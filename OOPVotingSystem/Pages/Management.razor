@@ -6,6 +6,8 @@
 
 <h2>Elections</h2>
 
+<br />
+
 <h3>All Election</h3>
 
 @if (_elections.Any())
@@ -22,7 +24,7 @@
                 <TableRow>
                     <TableRowHeader>@election.Id</TableRowHeader>
                     <TableRowCell>@election.Name</TableRowCell>
-                    <TableRowCell>@election.County</TableRowCell>
+                    <TableRowCell>@election.Country</TableRowCell>
                 </TableRow>
             }
         </TableBody>
@@ -32,6 +34,8 @@ else
 {
     <Paragraph>Add an election and it will appear here.</Paragraph>
 }
+
+<br />
 
 <h3>Create an Election</h3>
 
@@ -43,7 +47,7 @@ else
         </Field>
         <Field>
             <FieldLabel>Country</FieldLabel>
-            <TextEdit @bind-Text="_createElection.County"></TextEdit>
+            <TextEdit @bind-Text="_createElection.Country"></TextEdit>
         </Field>
     </Validation>
 </Validations>
@@ -52,6 +56,9 @@ else
     Clicked="CreateElection">
     Create
 </Button>
+
+<br />
+<br />
 
 <h3>Update an Election</h3>
 
@@ -62,12 +69,12 @@ else
             <TextEdit @bind-Text="_updateElection.Id"></TextEdit>
         </Field>
         <Field>
-            <FieldLabel>Election Name</FieldLabel>
+            <FieldLabel>New Election Name</FieldLabel>
             <TextEdit @bind-Text="_updateElection.Name"></TextEdit>
         </Field>
         <Field>
-            <FieldLabel>Country</FieldLabel>
-            <TextEdit @bind-Text="_updateElection.County"></TextEdit>
+            <FieldLabel>New Country</FieldLabel>
+            <TextEdit @bind-Text="_updateElection.Country"></TextEdit>
         </Field>
     </Validation>
 </Validations>
@@ -75,6 +82,9 @@ else
         Clicked="UpdateElection">
     Update
 </Button>
+
+<br />
+<br />
 
 <h3>Delete an Election</h3>
 
@@ -94,3 +104,95 @@ else
 
 <h2>Parties</h2>
 
+<br />
+
+<h3>All Parties</h3>
+
+@if (_parties.Any())
+{
+    <Table>
+        <TableHeader>
+            <TableHeaderCell>Id</TableHeaderCell>
+            <TableHeaderCell>Name</TableHeaderCell>
+            <TableHeaderCell>Street 1</TableHeaderCell>
+            <TableHeaderCell>City</TableHeaderCell>
+            <TableHeaderCell>Postal Code</TableHeaderCell>
+        </TableHeader>
+        <TableBody>
+            @foreach (var party in _parties)
+            {
+                <TableRow>
+                    <TableRowHeader>@party.Id</TableRowHeader>
+                    <TableRowCell>@party.Name</TableRowCell>
+                    <TableRowCell>@party.OperationAddress.Street1</TableRowCell>
+                    <TableRowCell>@party.OperationAddress.City</TableRowCell>
+                    <TableRowCell>@party.OperationAddress.PostalCode</TableRowCell>
+                </TableRow>
+            }
+        </TableBody>
+    </Table>
+}
+else
+{
+    <Paragraph>Add a party and it will appear here.</Paragraph>
+}
+
+<br />
+
+<h3>Create a Party</h3>
+
+<Validations>
+    <Validation Validator="ValidationRule.IsAlpha">
+        <Field>
+            <FieldLabel>Party Name</FieldLabel>
+            <TextEdit @bind-Text="_createParty.Name"></TextEdit>
+        </Field>
+    </Validation>
+    <AddressEntry Address="_createParty.OperationAddress" />
+</Validations>
+<Button Background="Background.Primary"
+        Clicked="CreateParty">
+    Create
+</Button>
+
+<br />
+<br />
+
+<h3>Update a Party</h3>
+
+<Validations>
+    <Validation Validator="ValidationRule.IsAlpha">
+        <Field>
+            <FieldLabel>Party Id</FieldLabel>
+            <TextEdit @bind-Text="_createParty.Id"></TextEdit>
+        </Field>
+        <Field>
+            <FieldLabel>New Party Name</FieldLabel>
+            <TextEdit @bind-Text="_createParty.Name"></TextEdit>
+        </Field>
+    </Validation>
+    <AddressEntry Address="_createParty.OperationAddress" />
+</Validations>
+<Button Background="Background.Primary"
+        Clicked="UpdateParty">
+    Update
+</Button>
+
+<br />
+<br />
+
+<h3>Delete a Party</h3>
+
+<Validation Validator="ValidationRule.IsAlpha">
+    <Field>
+        <FieldLabel>Party Id</FieldLabel>
+        <TextEdit @bind-Text="_deletePartyId"></TextEdit>
+    </Field>
+</Validation>
+<Button Background="Background.Danger"
+        Clicked="DeleteParty">
+    Delete
+</Button>
+
+<br />
+<br />

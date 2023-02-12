@@ -6,9 +6,9 @@
 
 <h3>Vote for a party</h3>
 
-@if (_userService.CurrentUser is not null)
+@if (UserService.CurrentUser is not null)
 {
-    @if (_userService.CurrentUser.Person.CanVote())
+    @if (UserService.CurrentUser.Person.CanVote())
     {
         <!-- Loop thorugh all parties -->
         <Check TValue="bool"></Check>

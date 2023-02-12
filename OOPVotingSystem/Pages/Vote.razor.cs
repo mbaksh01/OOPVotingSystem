@@ -6,22 +6,39 @@ namespace OOPVotingSystem.Pages;
 
 public partial class Vote : ComponentBase
 {
-    [Inject] IVoteRepository _voteRepository { get; set; } = default!;
+    [Inject] IPersonRepository PersonRepository { get; set; } = default!;
 
-    [Inject] IPersonRepository _personRepository { get; set; } = default!;
+    [Inject] IUserService UserService { get; set; } = default!;
 
-    [Inject] IUserService _userService { get; set; } = default!;
+    [Inject] NavigationManager NavigationManager { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UserService.CurrentUser is null)
+        {
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+
+        if (UserService.CurrentUser.Username.ToLower().Contains("admin"))
+        {
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+
+        await base.OnInitializedAsync();
+    }
 
     private async Task Register()
     {
-        if (_userService.CurrentUser is null)
+        if (UserService.CurrentUser is null)
         {
             return;
         }
 
         try
         {
-            await _personRepository.RegisterToVoteAsync(_userService.CurrentUser.PersonId);
+            await PersonRepository.RegisterToVoteAsync(UserService.CurrentUser.PersonId);
         }
         catch (InvalidOperationException ex)
         {

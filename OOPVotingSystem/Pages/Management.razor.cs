@@ -15,13 +15,21 @@ public partial class Management
 
     private string _deleteElectionId = string.Empty;
 
+    private IEnumerable<Party> _parties = default!;
+
     private readonly Party _createParty = new();
+
+    private readonly Party _updateParty = new();
+
+    private string _deletePartyId = string.Empty;
 
     [Inject] IUserService UserService { get; set; } = default!;
 
     [Inject] NavigationManager NavigationManager { get; set; } = default!;
 
     [Inject] IElectionRepository ElectionRepository { get; set; } = default!;
+
+    [Inject] IPartyRepository PartyRepository { get; set; } = default!;
 
     [Inject] ILogger<Management> Logger { get; set; } = default!;
 
@@ -30,14 +38,17 @@ public partial class Management
         if (UserService.CurrentUser is null)
         {
             NavigationManager.NavigateTo("/");
+            return;
         }
 
-        if (!UserService.CurrentUser!.Username.ToLower().Contains("admin"))
+        if (!UserService.CurrentUser.Username.ToLower().Contains("admin"))
         {
             NavigationManager.NavigateTo("/");
+            return;
         }
 
         _elections = await ElectionRepository.GetAllAsync();
+        _parties = await PartyRepository.GetAllAsync();
 
         await base.OnInitializedAsync();
     }
@@ -80,6 +91,48 @@ public partial class Management
             await ElectionRepository.DeleteAsync(_deleteElectionId);
 
             _elections = await ElectionRepository.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "{}", ex.Message);
+        }
+    }
+
+    private async Task CreateParty()
+    {
+        try
+        {
+            _ = await PartyRepository.CreateAsync(_createParty);
+
+            _parties = await PartyRepository.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "{}", ex.Message);
+        }
+    }
+
+    private async Task UpdateParty()
+    {
+        try
+        {
+            await PartyRepository.UpdateAsync(_updateParty.Id, _updateParty);
+
+            _parties = await PartyRepository.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "{}", ex.Message);
+        }
+    }
+
+    private async Task DeleteParty()
+    {
+        try
+        {
+            await PartyRepository.DeleteAsync(_deletePartyId);
+
+            _parties = await PartyRepository.GetAllAsync();
         }
         catch (Exception ex)
         {

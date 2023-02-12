@@ -7,18 +7,18 @@ namespace OOPVotingSystem.Repositories;
 
 public class VoteRepository : IVoteRepository
 {
-    private readonly VoteContext _voteContext;
+    private readonly Database _database;
 
-    public VoteRepository(VoteContext voteContext)
+    public VoteRepository(Database database)
     {
-        _voteContext = voteContext;
+        _database = database;
     }
 
     public IDictionary<string, int> CountElectionVotes()
     {
         IDictionary<string, int> electionVotes = new Dictionary<string, int>();
 
-        foreach (Vote vote in _voteContext.Votes)
+        foreach (Vote vote in _database.Votes)
         {
             if (electionVotes.ContainsKey(vote.ElectionId))
             {
@@ -36,7 +36,7 @@ public class VoteRepository : IVoteRepository
     {
         IDictionary<string, int> electionVotes = new Dictionary<string, int>();
 
-        await foreach (Vote vote in _voteContext.Votes.AsAsyncEnumerable())
+        await foreach (Vote vote in _database.Votes.AsAsyncEnumerable())
         {
             if (electionVotes.ContainsKey(vote.ElectionId))
             {
@@ -54,7 +54,7 @@ public class VoteRepository : IVoteRepository
     {
         IDictionary<string, int> partyVotes = new Dictionary<string, int>();
 
-        foreach (Vote vote in _voteContext.Votes.Where(t => t.ElectionId == electionId))
+        foreach (Vote vote in _database.Votes.Where(t => t.ElectionId == electionId))
         {
             if (partyVotes.TryGetValue(vote.Candidate.PartyId, out int value))
             {
@@ -71,7 +71,7 @@ public class VoteRepository : IVoteRepository
     {
         IDictionary<string, int> partyVotes = new Dictionary<string, int>();
 
-        IAsyncEnumerable<Vote> votes = _voteContext.Votes.Where(t => t.ElectionId == electionId).AsAsyncEnumerable();
+        IAsyncEnumerable<Vote> votes = _database.Votes.Where(t => t.ElectionId == electionId).AsAsyncEnumerable();
 
         await foreach (Vote vote in votes)
         {
@@ -86,15 +86,15 @@ public class VoteRepository : IVoteRepository
         return partyVotes;
     }
 
-    public int CountVotes(string partyId) => _voteContext.Votes.Count(t => t.Candidate.PartyId == partyId);
+    public int CountVotes(string partyId) => _database.Votes.Count(t => t.Candidate.PartyId == partyId);
 
     public async Task<Vote> CreateAsync(Vote entity)
     {
         entity.Id = Guid.NewGuid().ToString();
 
-        _ = await _voteContext.AddAsync(entity);
+        _ = await _database.AddAsync(entity);
 
-        _ = await _voteContext.SaveChangesAsync();
+        _ = await _database.SaveChangesAsync();
 
         return entity;
     }
@@ -103,25 +103,25 @@ public class VoteRepository : IVoteRepository
     {
         Vote vote = await GetVoteAsync(id);
 
-        _ = _voteContext.Votes.Remove(vote);
+        _ = _database.Votes.Remove(vote);
 
-        _ = await _voteContext.SaveChangesAsync();
+        _ = await _database.SaveChangesAsync();
     }
     
-    public Task<IEnumerable<Vote>> GetAllAsync() => Task.FromResult(_voteContext.Votes.AsEnumerable());
+    public Task<IEnumerable<Vote>> GetAllAsync() => Task.FromResult(_database.Votes.AsEnumerable());
     
     public Task<Vote> GetByIdAsync(string id) => GetVoteAsync(id);
     
     public async Task UpdateAsync(string id, Vote entity)
     {
-        _ = _voteContext.Votes.Update(entity);
+        _ = _database.Votes.Update(entity);
 
-        _ = await _voteContext.SaveChangesAsync();
+        _ = await _database.SaveChangesAsync();
     }
 
     private Vote GetVote(string id)
     {
-        Vote? vote = _voteContext.Votes.Find(id);
+        Vote? vote = _database.Votes.Find(id);
 
         return vote is null
             ? throw new ArgumentException(
@@ -133,7 +133,7 @@ public class VoteRepository : IVoteRepository
 
     private async Task<Vote> GetVoteAsync(string id)
     {
-        Vote? vote = await _voteContext.Votes.FindAsync(id);
+        Vote? vote = await _database.Votes.FindAsync(id);
 
         return vote is null
             ? throw new ArgumentException(

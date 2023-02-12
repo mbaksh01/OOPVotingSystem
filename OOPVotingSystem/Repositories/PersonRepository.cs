@@ -6,36 +6,24 @@ namespace OOPVotingSystem.Repositories;
 
 public class PersonRepository : IPersonRepository
 {
-    private readonly PersonContext _personContext;
-    private readonly VoteContext _voteContext;
+    private readonly Database _database;
 
-    public PersonRepository(PersonContext context, VoteContext voteContext)
+    public PersonRepository(Database database)
     {
-        _personContext = context;
-        _voteContext = voteContext;
+        _database = database;
     }
 
-    public void CastVote(Vote vote)
-    {
-        _ = _voteContext.Votes.Add(vote);
-
-        _ = _voteContext.SaveChanges();
-    }
+    public void CastVote(Vote vote) => throw new NotImplementedException();
     
-    public async Task CastVoteAsync(Vote vote)
-    {
-        _ = await _voteContext.Votes.AddAsync(vote);
-
-        _ = await _voteContext.SaveChangesAsync();
-    }
+    public Task CastVoteAsync(Vote vote) => throw new NotImplementedException();
     
     public async Task<Person> CreateAsync(Person entity)
     {
         entity.Id = Guid.NewGuid().ToString();
 
-        _ = await _personContext.People.AddAsync(entity);
+        _ = await _database.People.AddAsync(entity);
 
-        _ = await _personContext.SaveChangesAsync();
+        _ = await _database.SaveChangesAsync();
 
         return entity;
     }
@@ -44,12 +32,12 @@ public class PersonRepository : IPersonRepository
     {
         Person person = await GetPersonAsync(id);
 
-        _ = _personContext.People.Remove(person);
+        _ = _database.People.Remove(person);
 
-        _ = await _personContext.SaveChangesAsync();
+        _ = await _database.SaveChangesAsync();
     }
 
-    public Task<IEnumerable<Person>> GetAllAsync() => Task.FromResult(_personContext.People.AsEnumerable());
+    public Task<IEnumerable<Person>> GetAllAsync() => Task.FromResult(_database.People.AsEnumerable());
 
     public Task<Person> GetByIdAsync(string id) => GetPersonAsync(id);
 
@@ -121,14 +109,14 @@ public class PersonRepository : IPersonRepository
     
     public Task UpdateAsync(string id, Person entity)
     {
-        _ = _personContext.People.Update(entity);
+        _ = _database.People.Update(entity);
 
-        return _personContext.SaveChangesAsync();
+        return _database.SaveChangesAsync();
     }
 
     private Person GetPerson(string id)
     {
-        Person? person = _personContext.People.Find(id);
+        Person? person = _database.People.Find(id);
 
         if (person is null)
         {
@@ -143,7 +131,7 @@ public class PersonRepository : IPersonRepository
 
     private async Task<Person> GetPersonAsync(string id)
     {
-        Person? person = await _personContext.People.FindAsync(id);
+        Person? person = await _database.People.FindAsync(id);
 
         if (person is null)
         {

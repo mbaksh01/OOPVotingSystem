@@ -2,17 +2,38 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Vote</h1>
-
-@if (_userService.CurrentUser is not null)
+@if (UserService.CurrentUser is not null)
 {
-    <Paragraph>
-        Cast your vote <Anchor To="/vote">here</Anchor>.
-    </Paragraph>
+    @if (UserService.CurrentUserIsAdmin())
+    {
+        <h1>Management</h1>
+
+        <Paragraph>
+            Click <Anchor To="/manage">here</Anchor> to manage current elections and parties.
+        </Paragraph>
+
+        <Paragraph>
+            If your looking to cast a vote then you need to be logged in with an account which
+            does not have admin privileges.
+        </Paragraph>
+    }
+    else
+    {
+        <h1>Vote</h1>
+
+        <Paragraph>
+            Cast your vote <Anchor To="/vote">here</Anchor>.
+        </Paragraph>
+
+        <Paragraph>
+            If your looking to manage parties and elections then you need to login with an
+            account which has admin privileges.
+        </Paragraph>
+    }
 }
 else
 {
     <Paragraph>
-        You need to be logged in to vote.
+        You need to be logged in to cast a vote / manage the voting system.
     </Paragraph>
 }

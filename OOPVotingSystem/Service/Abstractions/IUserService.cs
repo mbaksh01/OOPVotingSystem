@@ -11,4 +11,6 @@ public interface IUserService
     Task CreateAccountAsync(User user);
 
     Task<bool> Login(string username, string password);
+
+    bool CurrentUserIsAdmin();
 }
