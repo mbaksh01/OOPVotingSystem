@@ -1,4 +1,5 @@
 ﻿@page "/vote"
+@using OOPVotingSystem.Models;
 
 <h2>Vote</h2>
 
@@ -10,9 +11,61 @@
 {
     @if (UserService.CurrentUser.Person.CanVote())
     {
-        <!-- Loop thorugh all parties -->
-        <Check TValue="bool"></Check>
-        <Button>Cast Vote</Button>
+        @if (_elections.Any())
+        {
+            <Dropdown>
+                <DropdownToggle Color="Color.Primary">
+                    Elections
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem>@_elections.First().Name</DropdownItem>
+                    @foreach (Election election in _elections.Skip(1))
+                    {
+                        <DropdownDivider />
+                        <DropdownItem
+                            Clicked="_ => SetSelectedElection(election.Id)">
+                            @election.Name
+                        </DropdownItem>
+                    }
+                </DropdownMenu>
+            </Dropdown>
+        }
+
+        @if (_election is not null)
+        {
+            <Paragraph>You selected election: @_election.Name.</Paragraph>
+        }
+
+        @if (_parties.Any())
+        {
+            <Dropdown>
+                <DropdownToggle Color="Color.Primary">
+                    Parties
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem>@_parties.First().Name</DropdownItem>
+                    @foreach (Party party in _parties.Skip(1))
+                    {
+                        <DropdownDivider />
+                        <DropdownItem Clicked="_ => SetSelectedParty(party.Id)">
+                            @party.Name
+                        </DropdownItem>
+                    }
+                </DropdownMenu>
+            </Dropdown>
+        }
+
+        @if (_party is not null)
+        {
+            <Paragraph>You selected party: @_party.Name.</Paragraph>
+        }
+
+        <Button Clicked="CastVote">Cast Vote</Button>
+
+        if (!string.IsNullOrEmpty(_castVoteMessage))
+        {
+            <Paragraph>@_castVoteMessage</Paragraph>
+        }
     }
     else
     {

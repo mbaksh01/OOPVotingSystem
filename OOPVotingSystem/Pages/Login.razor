@@ -2,13 +2,13 @@
 
 @if (!_signingUp)
 {
-<h3>Sign In</h3>
+    <h1>Sign In</h1>
 
-<Paragraph>
-    Don't have an account? Click <Anchor Clicked="@(() => _signingUp = true)">here</Anchor> to register.
-</Paragraph>
+    <Paragraph>
+        Don't have an account? Click <Anchor Clicked="@(() => _signingUp = true)">here</Anchor> to register.
+    </Paragraph>
 
-<hr />
+    <hr />
 
     @if (_justSignedUp)
     {
@@ -18,9 +18,9 @@
         </Paragraph>
     }
 
-<Validations>
-    <Validation Validator="ValidationRule.IsNotEmpty">
-        <Field Horizontal>
+    <Validations>
+        <Validation Validator="ValidationRule.IsNotEmpty">
+            <Field Horizontal>
             <FieldLabel ColumnSize="ColumnSize.Is1">Username</FieldLabel>
             <FieldBody ColumnSize="ColumnSize.Is3">
                 <TextEdit @bind-Text="_user.Username" Placeholder="Username"></TextEdit>
@@ -31,7 +31,10 @@
         <Field Horizontal>
             <FieldLabel ColumnSize="ColumnSize.Is1">Password</FieldLabel>
             <FieldBody ColumnSize="ColumnSize.Is3">
-                <TextEdit Role="TextRole.Password" @bind-Text="_user.Password" Placeholder="Password"></TextEdit>
+                <TextEdit @bind-Text="_user.Password"
+                          @onkeyup="OnEnterLogin"
+                          Role="TextRole.Password"
+                          Placeholder="Password" />
             </FieldBody>
         </Field>
     </Validation>
@@ -44,105 +47,102 @@
     </Button>
     <FieldBody>
         @if (_errorMessage is not null)
-        {
-            <Paragraph>@_errorMessage</Paragraph>
-        }
-    </FieldBody>
-</Validations>
+            {
+                <Paragraph>@_errorMessage</Paragraph>
+            }
+        </FieldBody>
+    </Validations>
 }
 else
 {
-<h3>Sign Up</h3>
+    <h1>Sign Up</h1>
 
-<Paragraph>
-    Already have an account? Click <Anchor Clicked="@(() => _signingUp = false)">here</Anchor> to sign in.
-</Paragraph>
+    <Paragraph>
+        Already have an account? Click <Anchor Clicked="@(() => _signingUp = false)">here</Anchor> to sign in.
+    </Paragraph>
 
-<hr />
+    <hr />
 
-<h4>Personal Details</h4>
+    <h2>Personal Details</h2>
 
-<Validations>
-    <Validation Validator="ValidationRule.IsNotEmpty">
-        <Field Horizontal>
-            <FieldLabel ColumnSize="ColumnSize.Is2">Name</FieldLabel>
-            <FieldBody ColumnSize="ColumnSize.Is4">
-                <TextEdit @bind-Text="_user.Person.Name" Placeholder="Full Name"></TextEdit>
-            </FieldBody>
-        </Field>
-    </Validation>
-    <Validation UsePattern>
-        <Field Horizontal>
-            <FieldLabel ColumnSize="ColumnSize.Is2">Phone Number</FieldLabel>
-            <FieldBody ColumnSize="ColumnSize.Is4">
-                <TextEdit
-                    Pattern="[0-9]*"
-                    Role="TextRole.Telephone" 
-                    @bind-Text="_user.Person.PhoneNumber" 
-                    Placeholder="Phone number"/>
-            </FieldBody>
-        </Field>
-    </Validation>
-    <Validation Validator="ValidationRule.IsEmail">
-        <Field Horizontal>
-            <FieldLabel ColumnSize="ColumnSize.Is2">Email</FieldLabel>
-            <FieldBody ColumnSize="ColumnSize.Is4">
-                <TextEdit Role="TextRole.Email" @bind-Text="_user.Person.Email" Placeholder="Email"></TextEdit>
-            </FieldBody>
-        </Field>
-    </Validation>
-    <Validation Validator="ValidationRule.IsAlpha">
-        <Field Horizontal>
-            <FieldLabel ColumnSize="ColumnSize.Is2">Unique Person Identifier</FieldLabel>
-            <FieldBody ColumnSize="ColumnSize.Is4">
-                <TextEdit
-                    @bind-Text="_user.Person.UniquePersonIdentifier"
-                    Placeholder="UNI"/>
-            </FieldBody>
-        </Field>
-    </Validation>
-    <Field Horizontal>
-        <FieldLabel ColumnSize="ColumnSize.Is2" Padding="Padding.Is3.FromEnd"></FieldLabel>
-        <FieldBody ColumnSize="ColumnSize.Is4" Display="Display.Flex" Flex="Flex.AlignItems.Center">
-            <Check TValue="bool" @bind-Checked="_user.Person.AcceptedTerms">
-                I have read and accepted the terms and conditions.
-            </Check>
-        </FieldBody>
-    </Field>
-</Validations>
-    
-<h4>Address</h4>
-
-<Validations>
-    <AddressEntry Address="_user.Person.Address" />
-</Validations>
-
-<h4>Sign In Details</h4>
-
-<Validations>
-    <Validation Validator="ValidationRule.IsNotEmpty">
+    <Validations>
+        <Validation Validator="ValidationRule.IsNotEmpty">
             <Field Horizontal>
-            <FieldLabel ColumnSize="ColumnSize.Is2">Username</FieldLabel>
-            <FieldBody ColumnSize="ColumnSize.Is4">
-                <TextEdit @bind-Text="_user.Username" Placeholder="Username"></TextEdit>
-            </FieldBody>
-        </Field>
-    </Validation>
-    <Validation Validator="ValidationRule.IsAlphanumericWithUnderscore">
+                <FieldLabel ColumnSize="ColumnSize.Is2">Name</FieldLabel>
+                <FieldBody ColumnSize="ColumnSize.Is4">
+                    <TextEdit @bind-Text="_user.Person.Name" Placeholder="Full Name"></TextEdit>
+                </FieldBody>
+            </Field>
+        </Validation>
+        <Validation UsePattern>
+            <Field Horizontal>
+                <FieldLabel ColumnSize="ColumnSize.Is2">Phone Number</FieldLabel>
+                <FieldBody ColumnSize="ColumnSize.Is4">
+                    <TextEdit Pattern="[0-9]*"
+                              Role="TextRole.Telephone"
+                              @bind-Text="_user.Person.PhoneNumber"
+                              Placeholder="Phone number" />
+                </FieldBody>
+            </Field>
+        </Validation>
+        <Validation Validator="ValidationRule.IsEmail">
+            <Field Horizontal>
+                <FieldLabel ColumnSize="ColumnSize.Is2">Email</FieldLabel>
+                <FieldBody ColumnSize="ColumnSize.Is4">
+                    <TextEdit Role="TextRole.Email" @bind-Text="_user.Person.Email" Placeholder="Email"></TextEdit>
+                </FieldBody>
+            </Field>
+        </Validation>
+        <Validation Validator="ValidationRule.IsAlpha">
+            <Field Horizontal>
+                <FieldLabel ColumnSize="ColumnSize.Is2">Unique Person Identifier</FieldLabel>
+                <FieldBody ColumnSize="ColumnSize.Is4">
+                    <TextEdit @bind-Text="_user.Person.UniquePersonIdentifier"
+                              Placeholder="UNI" />
+                </FieldBody>
+            </Field>
+        </Validation>
         <Field Horizontal>
-            <FieldLabel ColumnSize="ColumnSize.Is2">Password</FieldLabel>
-            <FieldBody ColumnSize="ColumnSize.Is4">
-                <TextEdit Role="TextRole.Password" @bind-Text="_user.Password" Placeholder="Password"></TextEdit>
+            <FieldLabel ColumnSize="ColumnSize.Is2" Padding="Padding.Is3.FromEnd"></FieldLabel>
+            <FieldBody ColumnSize="ColumnSize.Is4" Display="Display.Flex" Flex="Flex.AlignItems.Center">
+                <Check TValue="bool" @bind-Checked="_user.Person.AcceptedTerms">
+                    I have read and accepted the terms and conditions.
+                </Check>
             </FieldBody>
         </Field>
-    </Validation>
-    <Button Clicked="Register"
-            Border="Border.Is1.Rounded"
-            Margin="Margin.Is2.OnY"
-            Background="Background.Primary"
-            TextColor="TextColor.White">
-        Register
-    </Button>
-</Validations>
+    </Validations>
 
+    <h2>Address</h2>
+
+    <Validations>
+        <AddressEntry Address="_user.Person.Address" />
+    </Validations>
+
+    <h2>Sign In Details</h2>
+
+    <Validations>
+        <Validation Validator="ValidationRule.IsNotEmpty">
+            <Field Horizontal>
+                <FieldLabel ColumnSize="ColumnSize.Is2">Username</FieldLabel>
+                <FieldBody ColumnSize="ColumnSize.Is4">
+                    <TextEdit @bind-Text="_user.Username" Placeholder="Username"></TextEdit>
+                </FieldBody>
+            </Field>
+        </Validation>
+        <Validation Validator="ValidationRule.IsAlphanumericWithUnderscore">
+            <Field Horizontal>
+                <FieldLabel ColumnSize="ColumnSize.Is2">Password</FieldLabel>
+                <FieldBody ColumnSize="ColumnSize.Is4">
+                    <TextEdit Role="TextRole.Password" @bind-Text="_user.Password" Placeholder="Password"></TextEdit>
+                </FieldBody>
+            </Field>
+        </Validation>
+        <Button Clicked="Register"
+                Border="Border.Is1.Rounded"
+                Margin="Margin.Is2.OnY"
+                Background="Background.Primary"
+                TextColor="TextColor.White">
+            Register
+        </Button>
+    </Validations>
 }

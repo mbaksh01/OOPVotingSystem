@@ -4,7 +4,7 @@
 
 @if (UserService.CurrentUser is not null)
 {
-    @if (UserService.CurrentUserIsAdmin())
+    @if (UserService.CurrentUser.IsAdmin())
     {
         <h1>Management</h1>
 

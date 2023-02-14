@@ -21,6 +21,7 @@ builder.Services
     .AddScoped<IElectionRepository, ElectionRepository>()
     .AddScoped<IPartyRepository, PartyRepository>()
     .AddScoped<IPersonRepository, PersonRepository>()
+    .AddScoped<IUserRepository, UserRepository>()
     .AddScoped<IVoteRepository, VoteRepository>();
 
 builder.Services

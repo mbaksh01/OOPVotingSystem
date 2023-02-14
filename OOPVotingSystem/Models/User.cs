@@ -12,4 +12,6 @@ public class User
     public string PersonId { get; set; } = default!;
 
     public virtual Person Person { get; set; } = default!;
+
+    public bool IsAdmin() => Username.ToLower().Contains("admin");
 }

@@ -8,9 +8,9 @@ public interface IUserService
 
     public Action<User?>? CurrentUserChanged { get; set; }
 
-    Task CreateAccountAsync(User user);
+    Task<User> CreateAsync(User user);
 
     Task<bool> Login(string username, string password);
 
-    bool CurrentUserIsAdmin();
+    Task VerifyUser();
 }

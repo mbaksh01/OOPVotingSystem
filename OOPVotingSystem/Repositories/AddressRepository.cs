@@ -35,7 +35,7 @@ public sealed class AddressRepository : IRepository<Address>
     }
 
     public Task<IEnumerable<Address>> GetAllAsync()
-        => Task.FromResult(_database.Addresses.AsEnumerable());
+        => Task.FromResult<IEnumerable<Address>>(_database.Addresses);
     
     public async Task<Address> GetByIdAsync(string id)
     {

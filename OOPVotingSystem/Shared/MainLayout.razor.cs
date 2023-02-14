@@ -9,7 +9,7 @@ public partial class MainLayout
 
     protected override void OnInitialized()
     {
-        _userService.CurrentUserChanged = (_) => StateHasChanged();
+        _userService.CurrentUserChanged = _ => StateHasChanged();
 
         base.OnInitialized();
     }

@@ -1,12 +1,13 @@
-﻿using OOPVotingSystem.DAL;
-using OOPVotingSystem.Models;
+﻿using OOPVotingSystem.Models;
+using OOPVotingSystem.Repositories.Abstractions;
 using OOPVotingSystem.Service.Abstractions;
 
 namespace OOPVotingSystem.Service;
 
 public class UserService : IUserService
 {
-    private readonly Database _database;
+    private readonly ILogger<UserService> _logger;
+    private readonly IUserRepository _repository;
 
     private User? _user;
 
@@ -23,49 +24,51 @@ public class UserService : IUserService
 
     public Action<User?>? CurrentUserChanged { get; set; }
 
-    public UserService(Database database)
+    public UserService(ILogger<UserService> logger, IUserRepository repository)
     {
-        _database = database;
+        _logger = logger;
+        _repository = repository;
     }
 
-    public async Task CreateAccountAsync(User user)
-    {
-        ArgumentNullException.ThrowIfNull(nameof(user));
+    public Task<User> CreateAsync(User user)
+        => _repository.CreateAsync(user);
 
-        if (string.IsNullOrEmpty(user.PersonId))
+    public Task VerifyUser()
+    {
+        if (CurrentUser is null)
         {
-            throw new InvalidOperationException(
-                $"There is no person associated with this user. Set the {nameof(User.PersonId)} property and try again."
-            );
+            throw new InvalidOperationException($"{nameof(CurrentUser)} can not be null.");
         }
 
-        _ = await _database.Users.AddAsync(user);
-
-        _ = await _database.SaveChangesAsync();
+        return _repository.VerifyAccount(CurrentUser);
     }
 
     public async Task<bool> Login(string username, string password)
     {
-        User? user = await _database.Users.FindAsync(username);
-
-        if (user == null)
+        try
         {
-            return false;
+            User user = await _repository.GetUserByUsername(username);
+
+            if (user.Password != password)
+            {
+                throw new Exception("The provided password was not valid.");
+            }
+
+            CurrentUser = user;
+
+            return true;
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogError(ex, "An error occurred trying to log a user in.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred trying to log a user in.");
         }
 
-        if (user.Password != password)
-        {
-            return false;
-        }
-
-        CurrentUser = user;
-
-        return true;
+        return false;
     }
 
     public void Logout() => CurrentUser = null;
-
-    public bool CurrentUserIsAdmin()
-        => CurrentUser is not null
-        && CurrentUser.Username.ToLower().Contains("admin");
 }

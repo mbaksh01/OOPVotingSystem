@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using OOPVotingSystem.Models;
 using OOPVotingSystem.Service.Abstractions;
 
@@ -33,7 +34,7 @@ public partial class Login : ComponentBase, IDisposable
     {
         _user.PersonId = _user.Person.Id;
 
-        await _userService.CreateAccountAsync(_user);
+        await _userService.CreateAsync(_user);
 
         // _person = new();
         _user = new();
@@ -57,6 +58,16 @@ public partial class Login : ComponentBase, IDisposable
         }
 
         _justSignedUp = false;
+    }
+
+    private Task OnEnterLogin(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            return SignIn();
+        }
+
+        return Task.CompletedTask;
     }
 
     public void Dispose()

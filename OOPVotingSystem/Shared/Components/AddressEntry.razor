@@ -6,7 +6,10 @@
     <Field Horizontal>
         <FieldLabel ColumnSize="ColumnSize.Is2">Street1</FieldLabel>
         <FieldBody ColumnSize="ColumnSize.Is4">
-            <TextEdit @bind-Text="Address.Street1" Placeholder="Street 1"></TextEdit>
+            <TextEdit
+                ReadOnly="@ReadOnly"
+                @bind-Text="Address.Street1"
+                Placeholder="Street 1" />
         </FieldBody>
     </Field>
 </Validation>
@@ -15,9 +18,10 @@
         <FieldLabel ColumnSize="ColumnSize.Is2">Street2</FieldLabel>
         <FieldBody ColumnSize="ColumnSize.Is4">
             <TextEdit
+                ReadOnly="@ReadOnly"
                 Pattern="[a-zA-Z]*"
                 @bind-Text="Address.Street2"
-                Placeholder="Street 2"/>
+                Placeholder="Street 2" />
         </FieldBody>
     </Field>
 </Validation>
@@ -25,7 +29,10 @@
     <Field Horizontal>
         <FieldLabel ColumnSize="ColumnSize.Is2">City</FieldLabel>
         <FieldBody ColumnSize="ColumnSize.Is4">
-            <TextEdit @bind-Text="Address.City" Placeholder="City"></TextEdit>
+            <TextEdit
+                ReadOnly="@ReadOnly"
+                @bind-Text="Address.City"
+                Placeholder="City" />
         </FieldBody>
     </Field>
 </Validation>
@@ -33,10 +40,11 @@
     <Field Horizontal>
         <FieldLabel ColumnSize="ColumnSize.Is2">State</FieldLabel>
         <FieldBody ColumnSize="ColumnSize.Is4">
-            <TextEdit 
+            <TextEdit
+                ReadOnly="@ReadOnly"
                 Pattern="[a-zA-Z]*"
                 @bind-Text="Address.State"
-                Placeholder="State"/>
+                Placeholder="State" />
         </FieldBody>
     </Field>
 </Validation>
@@ -44,7 +52,10 @@
     <Field Horizontal>
         <FieldLabel ColumnSize="ColumnSize.Is2">Postal Code</FieldLabel>
         <FieldBody ColumnSize="ColumnSize.Is4">
-            <TextEdit @bind-Text="Address.PostalCode" Placeholder="Postal Code"></TextEdit>
+            <TextEdit
+                ReadOnly="@ReadOnly"
+                @bind-Text="Address.PostalCode"
+                Placeholder="Postal Code" />
         </FieldBody>
     </Field>
 </Validation>
@@ -52,7 +63,10 @@
     <Field Horizontal>
         <FieldLabel ColumnSize="ColumnSize.Is2">County</FieldLabel>
         <FieldBody ColumnSize="ColumnSize.Is4">
-            <TextEdit @bind-Text="Address.Country" Placeholder="County"></TextEdit>
+            <TextEdit
+                ReadOnly="@ReadOnly"
+                @bind-Text="Address.Country"
+                Placeholder="County" />
         </FieldBody>
     </Field>
 </Validation>
@@ -61,4 +75,6 @@
 
 @code {
     [Parameter] public OOPVotingSystem.Models.Address Address { get; set; } = default!;
+
+    [Parameter] public bool ReadOnly { get; set; }
 }

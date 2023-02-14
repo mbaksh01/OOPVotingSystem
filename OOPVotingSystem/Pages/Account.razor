@@ -1,3 +1,86 @@
 ﻿@page "/account"
 
-<h3></h3>
+<h1>Account Details</h1>
+
+@if (UserService.CurrentUser is not null)
+{
+    <h2>Personal Details</h2>
+
+    <Field Horizontal>
+        <FieldLabel ColumnSize="ColumnSize.Is2">Name</FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.Is4">
+            <TextEdit
+                ReadOnly
+                @bind-Text="UserService.CurrentUser.Person.Name"
+                Placeholder="Full Name" />
+        </FieldBody>
+    </Field>
+        <Field Horizontal>
+        <FieldLabel ColumnSize="ColumnSize.Is2">Phone Number</FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.Is4">
+            <TextEdit
+                ReadOnly
+                Pattern="[0-9]*"
+                Role="TextRole.Telephone"
+                @bind-Text="UserService.CurrentUser.Person.PhoneNumber"
+                Placeholder="Phone number" />
+        </FieldBody>
+    </Field>
+        <Field Horizontal>
+        <FieldLabel ColumnSize="ColumnSize.Is2">Email</FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.Is4">
+            <TextEdit
+                ReadOnly
+                Role="TextRole.Email"
+                @bind-Text="UserService.CurrentUser.Person.Email"
+                Placeholder="Email" />
+        </FieldBody>
+    </Field>
+        <Field Horizontal>
+        <FieldLabel ColumnSize="ColumnSize.Is2">Unique Person Identifier</FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.Is4">
+            <TextEdit
+                ReadOnly
+                @bind-Text="UserService.CurrentUser.Person.UniquePersonIdentifier"
+                Placeholder="UNI" />
+        </FieldBody>
+    </Field>
+        <Field Horizontal>
+        <FieldLabel ColumnSize="ColumnSize.Is2" Padding="Padding.Is3.FromEnd"></FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.Is4" Display="Display.Flex" Flex="Flex.AlignItems.Center">
+            <Check TValue="bool" @bind-Checked="UserService.CurrentUser.Person.AcceptedTerms">
+                I have read and accepted the terms and conditions.
+            </Check>
+        </FieldBody>
+    </Field>
+
+    <h3>Address</h3>
+
+    <AddressEntry Address="UserService.CurrentUser.Person.Address" ReadOnly />
+
+    <h2>Sign In Details</h2>
+
+    <Field Horizontal>
+        <FieldLabel ColumnSize="ColumnSize.Is2">Username</FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.Is4">
+            <TextEdit
+                ReadOnly
+                @bind-Text="UserService.CurrentUser.Username"
+                Placeholder="Username" />
+        </FieldBody>
+    </Field>
+
+    <h2>Verify Account</h2>
+
+    <Button
+        Clicked="ValidateAccount">
+        Verify Account
+    </Button>
+
+    @if (_verificationMessage is not null)
+    {
+        <Paragraph>
+            @_verificationMessage
+        </Paragraph>
+    }
+}
