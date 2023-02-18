@@ -10,6 +10,8 @@ public interface IUserService
 
     Task<User> CreateAsync(User user);
 
+    Task<bool> ValidateUsername(string username);
+
     Task<bool> Login(string username, string password);
 
     Task VerifyUser();

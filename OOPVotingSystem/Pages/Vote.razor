@@ -18,7 +18,10 @@
                     Elections
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem>@_elections.First().Name</DropdownItem>
+                    <DropdownItem
+                        Clicked="_ => SetSelectedElection(_elections.First().Id)">
+                        @_elections.First().Name
+                    </DropdownItem>
                     @foreach (Election election in _elections.Skip(1))
                     {
                         <DropdownDivider />
@@ -29,12 +32,24 @@
                     }
                 </DropdownMenu>
             </Dropdown>
+
+            @if (_election is not null)
+            {
+                <br />
+
+                <Paragraph>You selected election: @_election.Name.</Paragraph>
+            }
+        }
+        else
+        {
+            <Paragraph>
+                No elections are currently active.
+                Come back another time when there is
+                an active election.
+            </Paragraph>
         }
 
-        @if (_election is not null)
-        {
-            <Paragraph>You selected election: @_election.Name.</Paragraph>
-        }
+        <br />
 
         @if (_parties.Any())
         {
@@ -43,7 +58,10 @@
                     Parties
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem>@_parties.First().Name</DropdownItem>
+                    <DropdownItem
+                        Clicked="_ => SetSelectedParty(_parties.First().Id)">
+                        @_parties.First().Name
+                    </DropdownItem>
                     @foreach (Party party in _parties.Skip(1))
                     {
                         <DropdownDivider />
@@ -53,12 +71,24 @@
                     }
                 </DropdownMenu>
             </Dropdown>
+
+            <br />
+
+            @if (_party is not null)
+            {
+                <Paragraph>You selected party: @_party.Name.</Paragraph>
+            }
+        }
+        else
+        {
+            <Paragraph>
+                There are not parties yet.
+                Come back another time once
+                they have been added.
+            </Paragraph>
         }
 
-        @if (_party is not null)
-        {
-            <Paragraph>You selected party: @_party.Name.</Paragraph>
-        }
+        <br />
 
         <Button Clicked="CastVote">Cast Vote</Button>
 

@@ -33,6 +33,16 @@ public class UserService : IUserService
     public Task<User> CreateAsync(User user)
         => _repository.CreateAsync(user);
 
+    public Task<bool> ValidateUsername(string username)
+    {
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            return Task.FromResult(false);
+        }
+
+        return _repository.ValidateUsername(username);
+    }
+
     public Task VerifyUser()
     {
         if (CurrentUser is null)

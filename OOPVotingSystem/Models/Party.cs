@@ -8,7 +8,5 @@ public class Party
 
     public virtual Address OperationAddress { get; set; } = default!;
 
-    public virtual List<Budget> Budgets { get; set; } = new();
-
     public virtual List<Candidate> Candidates { get; set; } = new();
 }

@@ -1,7 +1,9 @@
-﻿using OOPVotingSystem.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+using OOPVotingSystem.DAL;
 using OOPVotingSystem.Models;
+using OOPVotingSystem.Repositories.Abstractions;
 
-namespace OOPVotingSystem.Repositories.Abstractions;
+namespace OOPVotingSystem.Repositories;
 
 public class UserRepository : IUserRepository
 {
@@ -23,13 +25,15 @@ public class UserRepository : IUserRepository
             );
         }
 
+        entity.Person.Verified = true;
+
         _ = await _database.Users.AddAsync(entity);
 
         _ = await _database.SaveChangesAsync();
 
         return entity;
     }
-    
+
     public async Task DeleteAsync(string id)
     {
         User user = await _database.Users.FindAsync(id)
@@ -39,7 +43,7 @@ public class UserRepository : IUserRepository
 
         _ = await _database.SaveChangesAsync();
     }
-    
+
     public Task<IEnumerable<User>> GetAllAsync()
         => Task.FromResult<IEnumerable<User>>(_database.Users);
 
@@ -56,6 +60,18 @@ public class UserRepository : IUserRepository
                 ?? throw new ArgumentException($"No user was associated with the username '{username}'.");
 
         return Task.FromResult(user);
+    }
+
+    public async Task<bool> ValidateUsername(string username)
+    {
+        User? user = await _database.Users.FirstOrDefaultAsync(t => t.Username == username);
+
+        if (user is null)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public Task UpdateAsync(string id, User entity)

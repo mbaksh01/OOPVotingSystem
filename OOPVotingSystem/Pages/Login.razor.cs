@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazorise;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using OOPVotingSystem.Models;
 using OOPVotingSystem.Service.Abstractions;
@@ -29,6 +30,68 @@ public partial class Login : ComponentBase, IDisposable
     [Inject] IUserService _userService { get; set; } = default!;
 
     [Inject] NavigationManager _navigationManager { get; set; } = default!;
+
+    private void DisplaySignIn()
+    {
+        _errorMessage = null;
+
+        _user = new()
+        {
+            Person = new()
+            {
+                Id = Guid.NewGuid().ToString(),
+
+                Address = new()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                }
+            }
+        };
+
+        _signingUp = false;
+    }
+
+    private void DisplaySignUp()
+    {
+        _errorMessage = null;
+
+        _user = new()
+        {
+            Person = new()
+            {
+                Id = Guid.NewGuid().ToString(),
+
+                Address = new()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                }
+            }
+        };
+
+        _signingUp = true;
+    }
+
+    private async Task CheckIfUsernameExists(ValidatorEventArgs args, CancellationToken cancellationToken)
+    {
+        string? username = args.Value as string;
+
+        if (string.IsNullOrEmpty(username))
+        {
+            args.Status = ValidationStatus.Error;
+            return;
+        }
+
+        bool valid = await _userService.ValidateUsername(username);
+
+        if (valid)
+        {
+            args.Status = ValidationStatus.Success;
+            return;
+        }
+
+        args.Status = ValidationStatus.Error;
+        args.ErrorText = "This username is taken.";
+    }
 
     private async Task Register()
     {

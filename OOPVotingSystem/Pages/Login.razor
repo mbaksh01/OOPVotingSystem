@@ -5,7 +5,7 @@
     <h1>Sign In</h1>
 
     <Paragraph>
-        Don't have an account? Click <Anchor Clicked="@(() => _signingUp = true)">here</Anchor> to register.
+        Don't have an account? Click <Anchor Clicked="DisplaySignUp">here</Anchor> to register.
     </Paragraph>
 
     <hr />
@@ -58,7 +58,7 @@ else
     <h1>Sign Up</h1>
 
     <Paragraph>
-        Already have an account? Click <Anchor Clicked="@(() => _signingUp = false)">here</Anchor> to sign in.
+        Already have an account? Click <Anchor Clicked="DisplaySignIn">here</Anchor> to sign in.
     </Paragraph>
 
     <hr />
@@ -93,7 +93,7 @@ else
                 </FieldBody>
             </Field>
         </Validation>
-        <Validation Validator="ValidationRule.IsAlpha">
+        <Validation Validator="ValidationRule.IsAlphanumeric">
             <Field Horizontal>
                 <FieldLabel ColumnSize="ColumnSize.Is2">Unique Person Identifier</FieldLabel>
                 <FieldBody ColumnSize="ColumnSize.Is4">
@@ -121,11 +121,15 @@ else
     <h2>Sign In Details</h2>
 
     <Validations>
-        <Validation Validator="ValidationRule.IsNotEmpty">
+        <Validation AsyncValidator="CheckIfUsernameExists">
             <Field Horizontal>
                 <FieldLabel ColumnSize="ColumnSize.Is2">Username</FieldLabel>
                 <FieldBody ColumnSize="ColumnSize.Is4">
-                    <TextEdit @bind-Text="_user.Username" Placeholder="Username"></TextEdit>
+                    <TextEdit @bind-Text="_user.Username" Placeholder="Username">
+                        <Feedback>
+                            <ValidationError></ValidationError>
+                        </Feedback>
+                    </TextEdit>
                 </FieldBody>
             </Field>
         </Validation>
@@ -145,4 +149,9 @@ else
             Register
         </Button>
     </Validations>
+
+    @if (_errorMessage is not null)
+    {
+        <Paragraph>@_errorMessage</Paragraph>
+    }
 }

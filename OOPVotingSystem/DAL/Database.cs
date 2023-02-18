@@ -11,10 +11,6 @@ public class Database : DbContext
 
     public DbSet<Election> Elections { get; set; }
 
-    public DbSet<Budget> Budgets { get; set; }
-
-    public DbSet<Costs> Costs { get; set; }
-
     public DbSet<Party> Parties { get; set; }
 
     public DbSet<Person> People { get; set; }

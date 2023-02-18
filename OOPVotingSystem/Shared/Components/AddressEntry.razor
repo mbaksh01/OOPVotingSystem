@@ -59,14 +59,14 @@
         </FieldBody>
     </Field>
 </Validation>
-<Validation Validator="ValidationRule.IsAlpha">
+<Validation UsePattern>
     <Field Horizontal>
-        <FieldLabel ColumnSize="ColumnSize.Is2">County</FieldLabel>
+        <FieldLabel ColumnSize="ColumnSize.Is2">Country</FieldLabel>
         <FieldBody ColumnSize="ColumnSize.Is4">
-            <TextEdit
+            <TextEdit Pattern="[a-zA-Z ]{4,}"
                 ReadOnly="@ReadOnly"
                 @bind-Text="Address.Country"
-                Placeholder="County" />
+                Placeholder="Country" />
         </FieldBody>
     </Field>
 </Validation>
