@@ -53,7 +53,7 @@ public class UserServiceTests
             .Setup(t => t.GetUserByUsername(It.IsAny<string>()))
             .ReturnsAsync(GetUser());
 
-        IUserService sut = new UserService(_mockLogger.Object, _mockUserRepository.Object);
+        IUserService sut = new UserService(_mockLogger.Object, _mockUserRepository.Object, _mockPersonRepository.Object);
 
         // Act
         bool response = await sut.Login("testUser", "password124");
