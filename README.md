@@ -27,7 +27,7 @@ provide the HTML and CSS across the wire for it to be displayed to an end user.
 This system uses EntityFramework as the database management system. The backing
 provider for the database is SQLite with the .db found at the root of this project.
 
-## Design Pattern
+## Design Patterns
 
 This project is using the Repository pattern. The repository pattern isolates
 the data access layer from the service layer and GUI layer, only exposing the
@@ -37,6 +37,15 @@ This design pattern also helps de-couple the service layer, data access layer
 and GUI layer. By doing so changes on a single layer would have little to no
 impact on the methods and classes which use it. It also increases testability
 as a small part of the code can easily be isolated and tested.
+
+### Class Diagrams and Sequence Diagram
+
+Find the following files in the `Assets` folder in this directory.
+
+- InitialClassDiagram.drawio - My initial design before i started my project.
+- PrototypeClassDiagram.drawio - The design of the current system after i had
+implemented all my code.
+- SequenceDiagram.drawio - A sequence diagram displaying the general flow of the application.
 
 ## Supported features in the current prototype
 
@@ -65,11 +74,28 @@ Visual Studio 2022.
 3. In Visual Studio press `F5` to start the application. A browser will
 automatically appear with the running application.
 
+## Running the unit tests
+
+**Note: The test project targets .NET 7 and will therefore the runtime and
+the SDK will need to be installed for the tests to run.**
+
+1. Open up a terminal in the current directory.
+2. Run the command `dotnet test`. This will look for suitable test and run
+them. Expect all the tests to pass.
+
+### Code Coverage
+
+The test primarily focus of the service layer as well as the data access layer
+(repositories). They aim to test individual units of a service / repository and
+confirm they work as expected. For example, a call to `CreateAsync` should
+increase the number of records in the database. Or a call to `UpdateAsync`
+should change the record but still have it retain it's `Id`.
+
 ## Using the application
 
 ### Using it as a administrator
 
-**Note: Admins are not allowed to cast votes.**
+**Note: Administrators are not allowed to cast votes.**
 
 1. Run the application.
 2. Click `Sign In` in the top right.
