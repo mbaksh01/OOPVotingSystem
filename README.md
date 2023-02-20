@@ -45,3 +45,9 @@ as a small part of the code can easily be isolated and tested.
 - Users can manage and view they accounts.
 - Admins can preform CRUD operations on elections and parties.
 - Data is persisted using a SQLite database file.
+
+## Running the application
+
+1. Find the publish file at the root of this directory.
+2. Double click on the `OOPVotingSystem.exe`.
+3. 
