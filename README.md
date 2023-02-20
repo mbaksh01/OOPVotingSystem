@@ -48,7 +48,9 @@ as a small part of the code can easily be isolated and tested.
 
 ## Running the application
 
-1. Find the `Published Project` in this directory.
+1. Find the `Published Project` in this directory. Note: This published version
+was created using a self-contained runtime, therefore, does not require the user
+to have the .NET 7 runtime installed on the PC. It also only supports win-x64.
 2. Double click on the `OOPVotingSystem.exe`.
 3. Navigate to `http://localhost:5000` to view the published application.
 
