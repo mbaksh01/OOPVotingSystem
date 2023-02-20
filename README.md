@@ -48,7 +48,7 @@ as a small part of the code can easily be isolated and tested.
 
 ## Running the application
 
-1. Find the publish file at the root of this directory.
+1. Find the `Published Project` in this directory.
 2. Double click on the `OOPVotingSystem.exe`.
 3. Navigate to `http://localhost:5000` to view the published application.
 
@@ -67,6 +67,8 @@ automatically appear with the running application.
 
 ### Using it as a administrator
 
+**Note: Admins are not allowed to cast votes.**
+
 1. Run the application.
 2. Click `Sign In` in the top right.
 3. Use the credentials `admin` for both the username and password to log in as
@@ -82,4 +84,5 @@ delete parties.
 3. Click `here` to create an account. If you already have credentials then you
 can use them to log in.
 4. Sign in with your existing / newly created credentials.
-5. 
+5. Click `here` to cast a vote.
+6. Select and election and a candidate to vote for and click `Cast Vote`.
