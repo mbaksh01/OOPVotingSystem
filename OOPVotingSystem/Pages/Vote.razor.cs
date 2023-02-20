@@ -68,12 +68,11 @@ public partial class Vote : ComponentBase
         }
 
         _ = await VoteRepository.CreateAsync(new(
-            candidateId: string.Empty,
             _election.Id,
-            _party.Id
+            UserService.CurrentUser!.Person.Id
         ));
 
         _castVoteMessage = 
-            $"You have successfully cast your vote the party: {_party.Name} in the election: {_election.Name}.";
+            $"You have successfully cast your vote the party: '{_party.Name}' in the election: '{_election.Name}'.";
     }
 }

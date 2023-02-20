@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazorise;
+using Microsoft.AspNetCore.Components;
+using Microsoft.IdentityModel.Tokens;
 using OOPVotingSystem.Models;
 using OOPVotingSystem.Repositories.Abstractions;
 using OOPVotingSystem.Service.Abstractions;
@@ -13,13 +15,33 @@ public partial class Management
 
     private readonly Election _updateElection = new();
 
-    private string _deleteElectionId = string.Empty;
+    private Validations? _createElectionsValidations;
+
+    private Validations? _updateElectionsValidations;
+
+    private Validations? _createPartyValidations;
+
+    private Validations? _updatePartyValidations;
 
     private IEnumerable<Party> _parties = default!;
 
-    private readonly Party _createParty = new();
+    private string _deleteElectionId = string.Empty;
 
-    private readonly Party _updateParty = new();
+    private readonly Party _createParty = new()
+    {
+        OperationAddress = new()
+        {
+            Id = Guid.NewGuid().ToString(),
+        },
+    };
+
+    private readonly Party _updateParty = new()
+    {
+        OperationAddress = new()
+        {
+            Id = Guid.NewGuid().ToString(),
+        },
+    };
 
     private string _deletePartyId = string.Empty;
 
@@ -28,6 +50,8 @@ public partial class Management
     [Inject] NavigationManager NavigationManager { get; set; } = default!;
 
     [Inject] IElectionRepository ElectionRepository { get; set; } = default!;
+
+    [Inject] IPartyService PartyService { get; set; } = default!;
 
     [Inject] IPartyRepository PartyRepository { get; set; } = default!;
 
@@ -48,7 +72,7 @@ public partial class Management
         }
 
         _elections = await ElectionRepository.GetAllAsync();
-        _parties = await PartyRepository.GetAllAsync();
+        _parties = await PartyService.GetAllPartiesAsync();
 
         await base.OnInitializedAsync();
     }
@@ -57,6 +81,16 @@ public partial class Management
     {
         try
         {
+            if (_createElectionsValidations is not null)
+            {
+                bool isValid = await _createElectionsValidations.ValidateAll();
+
+                if (!isValid)
+                {
+                    return;
+                }
+            }
+
             _ = await ElectionRepository.CreateAsync(_createElection);
 
             _elections = await ElectionRepository.GetAllAsync();
@@ -71,6 +105,16 @@ public partial class Management
     {
         try
         {
+            if (_updateElectionsValidations is not null)
+            {
+                bool isValid = await _updateElectionsValidations.ValidateAll();
+
+                if (!isValid)
+                {
+                    return;
+                }
+            }
+
             await ElectionRepository.UpdateAsync(
                 _updateElection.Id, 
                 _updateElection
@@ -104,7 +148,7 @@ public partial class Management
         {
             _ = await PartyRepository.CreateAsync(_createParty);
 
-            _parties = await PartyRepository.GetAllAsync();
+            _parties = await PartyService.GetAllPartiesAsync();
         }
         catch (Exception ex)
         {
@@ -118,7 +162,7 @@ public partial class Management
         {
             await PartyRepository.UpdateAsync(_updateParty.Id, _updateParty);
 
-            _parties = await PartyRepository.GetAllAsync();
+            _parties = await PartyService.GetAllPartiesAsync();
         }
         catch (Exception ex)
         {
@@ -132,7 +176,7 @@ public partial class Management
         {
             await PartyRepository.DeleteAsync(_deletePartyId);
 
-            _parties = await PartyRepository.GetAllAsync();
+            _parties = await PartyService.GetAllPartiesAsync();
         }
         catch (Exception ex)
         {

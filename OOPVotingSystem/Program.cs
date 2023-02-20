@@ -22,10 +22,12 @@ builder.Services
     .AddScoped<IPartyRepository, PartyRepository>()
     .AddScoped<IPersonRepository, PersonRepository>()
     .AddScoped<IUserRepository, UserRepository>()
+    .AddScoped<IRepository<OOPVotingSystem.Models.Address>, AddressRepository>()
     .AddScoped<IVoteRepository, VoteRepository>();
 
 builder.Services
-    .AddScoped<IUserService, UserService>();
+    .AddScoped<IUserService, UserService>()
+    .AddScoped<IPartyService, PartyService>();
 
 builder.Services
     .AddBlazorise(options => options.Immediate = true)

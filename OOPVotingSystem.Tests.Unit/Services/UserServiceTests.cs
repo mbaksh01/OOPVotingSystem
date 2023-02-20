@@ -11,6 +11,8 @@ public class UserServiceTests
 {
     private readonly Mock<IUserRepository> _mockUserRepository = new Mock<IUserRepository>();
 
+    private readonly Mock<IPersonRepository> _mockPersonRepository = new Mock<IPersonRepository>();
+
     private readonly Mock<ILogger<UserService>> _mockLogger = new Mock<ILogger<UserService>>();
 
     private User GetUser()
@@ -31,7 +33,10 @@ public class UserServiceTests
             .Setup(t => t.GetUserByUsername(It.IsAny<string>()))
             .ReturnsAsync(GetUser());
 
-        IUserService sut = new UserService(_mockLogger.Object, _mockUserRepository.Object);
+        IUserService sut = new UserService(
+            _mockLogger.Object,
+            _mockUserRepository.Object,
+            _mockPersonRepository.Object);
 
         // Act
         bool response = await sut.Login("testUser", "password123");

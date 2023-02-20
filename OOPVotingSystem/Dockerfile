@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["OOPVotingSystem/OOPVotingSystem.csproj", "OOPVotingSystem/"]
+COPY ["OOPVotingSystem.csproj", "OOPVotingSystem/"]
 RUN dotnet restore "OOPVotingSystem/OOPVotingSystem.csproj"
 COPY . .
 WORKDIR "/src/OOPVotingSystem"

@@ -90,10 +90,16 @@
 
         <br />
 
-        <Button Clicked="CastVote">Cast Vote</Button>
+        <Button
+            Clicked="CastVote"
+            Color="Color.Primary">
+            Cast Vote
+        </Button>
 
         if (!string.IsNullOrEmpty(_castVoteMessage))
         {
+            <br />
+
             <Paragraph>@_castVoteMessage</Paragraph>
         }
     }

@@ -39,8 +39,8 @@ else
 
 <h3>Create an Election</h3>
 
-<Validations>
-    <Validation Validator="ValidationRule.IsAlpha">
+<Validations @ref="_createElectionsValidations">
+    <Validation Validator="ValidationRule.IsNotEmpty">
         <Field>
             <FieldLabel>Election Name</FieldLabel>
             <TextEdit @bind-Text="_createElection.Name"></TextEdit>
@@ -62,8 +62,8 @@ else
 
 <h3>Update an Election</h3>
 
-<Validations>
-    <Validation Validator="ValidationRule.IsAlpha">
+<Validations @ref="_updateElectionsValidations">
+    <Validation Validator="ValidationRule.IsNotEmpty">
         <Field>
             <FieldLabel>Election Id</FieldLabel>
             <TextEdit @bind-Text="_updateElection.Id"></TextEdit>
@@ -88,7 +88,7 @@ else
 
 <h3>Delete an Election</h3>
 
-<Validation Validator="ValidationRule.IsAlpha">
+<Validation Validator="ValidationRule.IsNotEmpty">
     <Field>
         <FieldLabel>Election Id</FieldLabel>
         <TextEdit @bind-Text="_deleteElectionId"></TextEdit>
@@ -141,8 +141,8 @@ else
 
 <h3>Create a Party</h3>
 
-<Validations>
-    <Validation Validator="ValidationRule.IsAlpha">
+<Validations @ref="_createElectionsValidations">
+    <Validation Validator="ValidationRule.IsNotEmpty">
         <Field>
             <FieldLabel>Party Name</FieldLabel>
             <TextEdit @bind-Text="_createParty.Name"></TextEdit>
@@ -160,18 +160,18 @@ else
 
 <h3>Update a Party</h3>
 
-<Validations>
-    <Validation Validator="ValidationRule.IsAlpha">
+<Validations @ref="_updateElectionsValidations">
+    <Validation Validator="ValidationRule.IsNotEmpty">
         <Field>
             <FieldLabel>Party Id</FieldLabel>
-            <TextEdit @bind-Text="_createParty.Id"></TextEdit>
+            <TextEdit @bind-Text="_updateParty.Id"></TextEdit>
         </Field>
         <Field>
             <FieldLabel>New Party Name</FieldLabel>
-            <TextEdit @bind-Text="_createParty.Name"></TextEdit>
+            <TextEdit @bind-Text="_updateParty.Name"></TextEdit>
         </Field>
     </Validation>
-    <AddressEntry Address="_createParty.OperationAddress" />
+    <AddressEntry Address="_updateParty.OperationAddress" />
 </Validations>
 <Button Background="Background.Primary"
         Clicked="UpdateParty">
@@ -183,7 +183,7 @@ else
 
 <h3>Delete a Party</h3>
 
-<Validation Validator="ValidationRule.IsAlpha">
+<Validation Validator="ValidationRule.IsNotEmpty">
     <Field>
         <FieldLabel>Party Id</FieldLabel>
         <TextEdit @bind-Text="_deletePartyId"></TextEdit>

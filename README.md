@@ -50,4 +50,36 @@ as a small part of the code can easily be isolated and tested.
 
 1. Find the publish file at the root of this directory.
 2. Double click on the `OOPVotingSystem.exe`.
-3. 
+3. Navigate to `http://localhost:5000` to view the published application.
+
+## Running the application from Visual Studio 2022
+
+**Note: This project is targeting .NET 7 which is not supported by Visual
+Studio versions prior to 2022.**
+
+1. Open the solution directory.
+2. Right click on `OOPVotingSystem.sln` and select Open With > Microsoft
+Visual Studio 2022.
+3. In Visual Studio press `F5` to start the application. A browser will
+automatically appear with the running application.
+
+## Using the application
+
+### Using it as a administrator
+
+1. Run the application.
+2. Click `Sign In` in the top right.
+3. Use the credentials `admin` for both the username and password to log in as
+an administrator.
+4. On the home page click `here` to view the administrator page. From here you
+are able to view existing elections and parties, as well as create, update and
+delete parties.
+
+### Using it as a user
+
+1. Run the application.
+2. Click `Sign In` in the top right.
+3. Click `here` to create an account. If you already have credentials then you
+can use them to log in.
+4. Sign in with your existing / newly created credentials.
+5. 

@@ -8,6 +8,7 @@ public class UserService : IUserService
 {
     private readonly ILogger<UserService> _logger;
     private readonly IUserRepository _repository;
+    private readonly IPersonRepository _personRepository;
 
     private User? _user;
 
@@ -24,10 +25,11 @@ public class UserService : IUserService
 
     public Action<User?>? CurrentUserChanged { get; set; }
 
-    public UserService(ILogger<UserService> logger, IUserRepository repository)
+    public UserService(ILogger<UserService> logger, IUserRepository repository, IPersonRepository personRepository)
     {
         _logger = logger;
         _repository = repository;
+        _personRepository = personRepository;
     }
 
     public Task<User> CreateAsync(User user)
@@ -63,6 +65,8 @@ public class UserService : IUserService
             {
                 throw new Exception("The provided password was not valid.");
             }
+
+            user.Person = await _personRepository.GetByIdAsync(user.PersonId);
 
             CurrentUser = user;
 
